@@ -1,0 +1,17 @@
+.message-input {
+    resize: none;
+}
+
+.form-control {
+    border-color: black;
+}
+
+.form-control:focus {
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.markdown {
+    word-wrap: break-word;
+}

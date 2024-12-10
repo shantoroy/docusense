@@ -1,4 +1,4 @@
-# llm-model-training-poc
+# DocuSense
 
 ## Directory Structure
 - `DocuSense-Frontend`: Frontend code

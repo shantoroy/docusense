@@ -6,7 +6,10 @@ from flask_cors import CORS
 
 from RAG import RAG
 
+# Define which data will be loaded into the system:
 DOCUMENTS_PATH = "./data"
+
+# LLM prompt:
 prompt = r"""
 <TASK>
 You are an expert in answering questions based on documents provided to you. 
@@ -27,8 +30,10 @@ rag = RAG(prompt, DOCUMENTS_PATH)
 # Flask app:
 app = Flask(__name__)
 
+# CORS:
 CORS(app)
 
+# Server side events formatting:
 def format_sse(data: str, event=None):
     msg = f'data: {data}\n\n'
 
@@ -38,6 +43,7 @@ def format_sse(data: str, event=None):
     return msg
 
 
+# Chat endpoint:
 @app.route("/chat", methods=['GET'])
 def handle_chat_message():
 
@@ -45,9 +51,11 @@ def handle_chat_message():
     chat_message = request.args.get('chat_message', default="", type=str)
     chat_name = request.args.get('chat_name', default="", type=str)
 
+    # Validate parameter:
     if len(chat_message) == 0 or len(chat_name) == 0:
         raise ValueError("Parameter chat_message and chat_name cannot be empty.")
 
+    # SSE stream:
     def stream():
         for msg_part in rag.rag(chat_name, chat_message):
             yield format_sse(event="chunk", data=json.dumps({"text": msg_part}))
@@ -55,6 +63,7 @@ def handle_chat_message():
         # Yield finish message:
         yield format_sse(event="finish", data=".")
 
+    # Return the stream:
     return flask.Response(stream(), mimetype='text/event-stream')
 
 

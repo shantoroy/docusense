@@ -13,6 +13,8 @@ import { bundledThemes } from "shiki/themes";
 import { type LLMOutputComponent } from "@llm-ui/react";
 import { createOnigurumaEngine } from 'shiki/engine/oniguruma'
 
+
+// Syntax highlighting for LLM output:
 const highlighter = loadHighlighter(
     getSingletonHighlighterCore({
         langs: allLangs(bundledLanguagesInfo),
@@ -22,11 +24,12 @@ const highlighter = loadHighlighter(
     }),
 );
 
+// Theme for LLM output:
 const codeToHtmlOptions: CodeToHtmlOptions = {
     theme: "github-light",
 };
 
-// Customize this component with your own styling
+// Code block format:
 const CodeBlock: LLMOutputComponent = ({ blockMatch }) => {
     const { html, code } = useCodeBlockToHtml({
         markdownCodeBlock: blockMatch.output,
@@ -34,7 +37,7 @@ const CodeBlock: LLMOutputComponent = ({ blockMatch }) => {
         codeToHtmlOptions,
     });
     if (!html) {
-        // fallback to <pre> if Shiki is not loaded yet:
+        // Fallback to <pre> if Shiki is not loaded yet:
         return (
             <pre className="shiki">
                 <code>{code}</code>

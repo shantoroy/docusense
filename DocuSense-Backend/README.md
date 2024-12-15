@@ -1,4 +1,5 @@
 # DocuSense-Backend
+This folder contains the Python backend for serving DocuSense. 
 
 ## Making .venv (recommended)
 ```shell

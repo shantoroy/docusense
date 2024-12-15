@@ -11,16 +11,23 @@ export interface Message {
 
 const ChatComponent = () => {
 
+    // Block users from sending multiple messages while waiting for a response:
     const [sending, setSending] = React.useState(false);
+
+    // Message list where users type text:
     const [messageInput, setMessageInput] = React.useState("");
+
+    // List of messages:
     const [messages, setMessages] = React.useState<Message[]>([]);
 
+    // When a user sends a message, call this function:
     const sendMessage = () => {
 
+        // Clear message input and set sending flag to true:
         setMessageInput("");
-
         setSending(true);
 
+        // Add the message to re-render the messages field:
         setMessages((prev) => {
             return [...prev, {
                 "direction": "outgoing",

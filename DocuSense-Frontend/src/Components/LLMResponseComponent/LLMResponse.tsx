@@ -23,6 +23,7 @@ interface ChunkTextResponse {
 const LLMResponse =
     ( {chat_message, chat_name, set_sending}: LLMResponseProps ) => {
 
+    // Text scroll output for LLM:
     const [output, setOutput] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string>("");
     const [_, setIsStarted] = useState(false);
@@ -33,6 +34,7 @@ const LLMResponse =
         setIsStarted(true);
         setOutput("");
 
+        // Build request to backend:
         const params = new URLSearchParams({
            chat_message: chat_message,
            chat_name: chat_name,
@@ -67,35 +69,6 @@ const LLMResponse =
         return () => eventSource.close();
 
     }, []);
-    // const startChat = useCallback(() => {
-    //
-    //     setIsStarted(true);
-    //     setOutput("");
-    //
-    //     const eventSource = new EventSource(CHAT_ENDPOINT + `?chat_message=${chat_message}&chat_name=${chat_name}`);
-    //
-    //     // Error occurred:
-    //     eventSource.addEventListener("error", () => {
-    //         setErrorMessage("An error occurred while generating this response.");
-    //         eventSource.close();
-    //     });
-    //
-    //     // When a new text chunk arrives:
-    //     eventSource.addEventListener("chunk", (e) => {
-    //         const token = JSON.parse(e.data) as ChunkTextResponse;
-    //         setOutput((prevResponse) => `${prevResponse}${token.text}`);
-    //     });
-    //
-    //     // Once the finish event comes:
-    //     eventSource.addEventListener("finish", () => {
-    //         eventSource.close();
-    //         setIsStreamFinished(true);
-    //     });
-    //
-    //     // Component unload, close the event listener:
-    //     return () => eventSource.close();
-    //
-    // }, []);
 
     const { blockMatches } = useLLMOutput({
         llmOutput: output,
@@ -116,7 +89,6 @@ const LLMResponse =
 
     return (
         <div>
-            {/*{!isStarted && <button onClick={startChat}>Start</button>}*/}
             {blockMatches.map((blockMatch, index) => {
                 const Component = blockMatch.block.component;
                 return <Component key={index} blockMatch={blockMatch}/>;
